@@ -20,10 +20,11 @@ import { Button, Input, Space, Table, Tag, Popconfirm } from "antd";
 
 // Component
 import ModalNote from "./ModalNote";
+import ModalAddNew from "./ModalAddNew";
 import { dataFakeHasInvoice, listDataInvoice } from "./DataFake";
 
 // Styles
-import styles from './Styles/index.less';
+import styles from './Styles/index.module.scss';
 
 // Img
 import note from '../Img/notes.png';
@@ -268,6 +269,9 @@ function Invoice() {
 
     return(
     	<div className={styles.wrapInvoice}>
+		    <div className={styles.invoiceHeader}>
+				<ModalAddNew />
+		    </div>
 		    <Table
 			    columns={columns}
 			    dataSource={listDataInvoice}

@@ -14,8 +14,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Button, Space } from 'antd';
-import styles from '../ModalNote/index.module.scss';
+import { Modal, Button } from 'antd';
+
+// Style
+import styles from './Styles/index.module.scss';
+
+// image
+import close from '../../Img/close.png';
 
 function ModalNote({ open, setOpen, dataInvoice }) {
 
@@ -39,28 +44,54 @@ function ModalNote({ open, setOpen, dataInvoice }) {
 	return(
 	    <Modal
 		    title="Thông tin chi tiết"
-		    centered
+		    // centered
 		    open={open}
-			wrapClassName={styles.modal}
+		    closeIcon={<img src={close} alt="" width='12px' />}
 		    width={600}
 		    onOk={onClick}
 		    onCancel={onClick}
+		    wrapClassName={styles.wrapModal}
 		    footer={
-			    <Button onClick={onClick} danger>Đóng</Button>
+			    <Button onClick={onClick} type="primary" danger>
+				    Đóng
+			    </Button>
 		    }
 	    >
-		    <p>Tên thiết bị: {device}</p>
-		    <p>Thời gian làm: {workTime}</p>
-		    <p>Chủ thẻ: {name}</p>
-		    <p>Mã số thẻ: {cardNumber}</p>
-		    <p>Số tiền nhận từ khách: {amountOfMoney}</p>
-		    <p>% Phí ngân hàng: {bankingFee} %</p>
-		    <p>Phí thu: {fees}</p>
-		    <p>Phí ngân hàng: {bankFees}</p>
-		    <p>% Phí thu khách: {customerCharge} %</p>
-		    <p>Số tiền lãi: {interestRate}</p>
-		    <p>Hình thức: {tag}</p>
-		    <p>Note: {note}</p>
+		    <p className={styles.wrapText}>Tên thiết bị:
+			    <span className={styles.contentText}> {device}</span>
+		    </p>
+		    <p className={styles.wrapText}>Thời gian làm:
+			    <span className={styles.contentText}> {workTime}</span>
+		    </p>
+		    <p className={styles.wrapText}>Chủ thẻ:
+			    <span className={styles.contentText}> {name}</span>
+			</p>
+		    <p className={styles.wrapText}>Mã số thẻ:
+			    <span className={styles.contentText}> {cardNumber}</span>
+			</p>
+		    <p className={styles.wrapText}>Số tiền nhận từ khách:
+			    <span className={styles.contentText}> {amountOfMoney}</span>
+			</p>
+		    <p className={styles.wrapText}>% Phí ngân hàng:
+			    <span className={styles.contentText}> {bankingFee} %</span></p>
+		    <p className={styles.wrapText}>Phí thu:
+			    <span className={styles.contentText}> {fees}</span>
+			</p>
+		    <p className={styles.wrapText}>Phí ngân hàng:
+			    <span className={styles.contentText}> {bankFees}</span>
+			</p>
+		    <p className={styles.wrapText}>% Phí thu khách:
+			    <span className={styles.contentText}> {customerCharge} %</span>
+		    </p>
+		    <p className={styles.wrapText}> Số tiền lãi:
+			    <span className={styles.contentText}> {interestRate}</span>
+			</p>
+		    <p className={styles.wrapText}>Hình thức:
+			    <span className={styles.contentText}> {tag}</span>
+		    </p>
+		    <p className={styles.wrapText}>Note:
+				<span className={styles.contentText}> {note}</span>
+		    </p>
 	    </Modal>
     );
 }

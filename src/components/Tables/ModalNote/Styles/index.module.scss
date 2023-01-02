@@ -1,0 +1,32 @@
+.wrapModal {
+    :global {
+        .ant-modal-content {
+            border-radius: 20px;
+        }
+        .ant-modal-title {
+            font-style: normal;
+            font-weight: 700;
+            font-size: 25px;
+            line-height: 150%;
+            text-align: center;
+        }
+        .ant-modal-close {
+            width: 29px;
+            height: 29px;
+            border-radius: 50%;
+        }
+        .ant-modal-close-x {
+            font-size: 20px;
+        }
+    }
+    .wrapText {
+        color: #4D4D4D;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        .contentText {
+            line-height: 24px;
+            color: #000000;
+        }
+    }
+}
