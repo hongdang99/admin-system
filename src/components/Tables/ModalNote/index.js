@@ -44,7 +44,7 @@ function ModalNote({ open, setOpen, dataInvoice }) {
 	return(
 	    <Modal
 		    title="Thông tin chi tiết"
-		    // centered
+		    centered
 		    open={open}
 		    closeIcon={<img src={close} alt="" width='12px' />}
 		    width={600}

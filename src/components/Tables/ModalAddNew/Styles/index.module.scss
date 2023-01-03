@@ -18,16 +18,14 @@
             width: 29px;
             height: 29px;
             border-radius: 50%;
+            background-color: #dcdcdc;
         }
         .ant-modal-close-x {
             font-size: 20px;
         }
     }
     .wrapContent {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin: 20px 0;
+        margin: 5px 0;
     }
     .titleText {
         margin-right: 5px;
