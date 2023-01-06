@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 
 const { TextArea } = Input;
 
-function InputCustom({ width, styles, placeholder, maxLength, onChangeInputCustom, type }) {
+function InputCustom({ placeholder, maxLength, onChangeInputCustom, type }) {
 
 	const [checkMax, setCheckMax] = React.useState(0);
 
@@ -43,7 +43,6 @@ function InputCustom({ width, styles, placeholder, maxLength, onChangeInputCusto
 			    ) : (
 			    	<Input
 					    autoSize
-					    // style={{ width, ...styles }}
 					    placeholder={placeholder}
 					    maxLength={maxLength}
 					    status={maxLength === checkMax && "error"}
@@ -55,10 +54,7 @@ function InputCustom({ width, styles, placeholder, maxLength, onChangeInputCusto
 }
 
 InputCustom.propTypes = {
-	width: PropTypes.number,
 	maxLength: PropTypes.number,
-
-	styles: PropTypes.object,
 
 	type: PropTypes.bool,
 
@@ -68,8 +64,6 @@ InputCustom.propTypes = {
 };
 
 InputCustom.defaultProps = {
-	width: 300,
-	styles: {},
 	type: false,
 	placeholder: 'Vui lòng nhập',
 };
