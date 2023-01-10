@@ -16,10 +16,13 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
-import { Modal, DatePicker, InputNumber, Select } from 'antd';
+import { Modal, DatePicker, Select } from 'antd';
 
 // Component
 import InputCustom from "./InputCustom";
+
+// Shared
+import { dateFormatList, today, typeName } from '../Shared/GeneralInformationTable';
 
 // Style
 import styles from './Styles/index.module.scss';
@@ -28,7 +31,6 @@ import styles from './Styles/index.module.scss';
 import close from '../../Img/close.png';
 
 // Antd
-const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
 const provinceData = ['Rút tiền', 'Đáo'];
 
 const options = [
@@ -49,62 +51,66 @@ const options = [
 	{id: '15', value: 'Thiết bị 15', label: 'Thiết bị 15'}
 ];
 
-const dateDefault = () => {
-	const dates = new Date();
-	return (
-		("0" + dates.getDate()).slice(-2) +
-		"/" +
-		("0" + (dates.getMonth() + 1)).slice(-2) +
-		"/" +
-		dates.getFullYear()
-	);
-};
-
 function ModalAddNew(props) {
 	const { isModal, onCloseModal } = props;
 
-	const [data, setData] = React.useState({
-		device: options[0].label, // Tên thiết bị
-		workTime: dateDefault(), // Ngày làm
-		name: '', // Chủ thẻ
-		cardNumber: '', // Số thẻ
-		amountOfMoney: 0, // Số tiền
-		bankingFee: 0, // % Phí ngân hàng
-		customerCharge: 0, // % Phí thu khách
-		tag: provinceData[0], // Hình thức
-		Note: '', // Note
-	});
+	const initializationValue = {
+		[typeName.device]: options[0].label, // Tên thiết bị
+		[typeName.workTime]: today(), // Ngày làm
+		[typeName.accountName]: '', // Chủ thẻ
+		[typeName.cardNumber]: '', // Số thẻ
+		[typeName.amountOfMoney]: 0, // Số tiền
+		[typeName.bankingFee]: 0, // % Phí ngân hàng
+		[typeName.customerCharge]: 0, // % Phí thu khách
+		[typeName.tag]: provinceData[0], // Hình thức
+		[typeName.note]: '', // Note
+	};
+
+	// All Data Modal Add news
+	const [data, setData] = React.useState(initializationValue);
+
+	// Loading
+	const [confirmLoading, setConfirmLoading] = React.useState(false);
 
 	const onCancelModal = () => {
+		setData(initializationValue);
 		onCloseModal();
-	}
+	};
 
 	const onOkModal = () => {
-		console.log('data: ================>', data); // Log QuanDX fix bug
-		// onCancelModal();
+		if (data.accountName && data.cardNumber && data.amountOfMoney && data.bankingFee && data.customerCharge) {
+			setConfirmLoading(true);
+			// Fake call API
+			setTimeout(() => {
+				onCancelModal();
+				setConfirmLoading(false);
+			}, 2000);
+			console.log('data: ================>', data); // Log QuanDX fix bug
+		} else {
+			Modal.warning({
+				title: 'Thông tin khách hàng không được để trống!',
+				content: 'Vui lòng nhập đầy đủ thông tin khách hàng.',
+			});
+		}
 	};
 
 	const onChangeDevice = (value) => {
 		// Tên thiết bị
-		setData({...data, device: value  });
+		setData({...data, [typeName.device]: value  });
 	};
 
 	const onChangeDatePicker = (date, dateString) => {
 		// Chọn ngày làm
-		setData({...data, workTime: dateString });
+		setData({ ...data, [typeName.workTime]: dateString });
 	};
 
 	const onChangeTag = (value) => {
 		// Hình thức
-		setData({...data, tag: value  });
+		setData({ ...data, [typeName.tag]: value  });
 	};
 
-	const onChangeInputNumber = (value) => {
-		console.log('value: ================>', value); // Log QuanDX fix bug
-	};
-
-	const onChangeInput = (value) => {
-		console.log('value: ================>', value); // Log QuanDX fix bug
+	const onChangeInput = (value, type) => {
+		setData({ ...data, [typeName[type]]: value })
 	};
 
     return(
@@ -116,6 +122,7 @@ function ModalAddNew(props) {
 		    cancelText="Đóng"
 		    onOk={onOkModal}
 		    onCancel={onCancelModal}
+		    confirmLoading={confirmLoading}
 		    open={isModal}
 		    wrapClassName={styles.modalAddNew}
 		    closeIcon={<img src={close} alt="" width='12px' />}
@@ -140,7 +147,7 @@ function ModalAddNew(props) {
 				    }}
 				    placeholder="Chọn ngày làm"
 				    onChange={onChangeDatePicker}
-				    defaultValue={dayjs(dateDefault(), dateFormatList[0])}
+				    defaultValue={dayjs(today(), dateFormatList[0])}
 				    format={dateFormatList}
 				    dateRender={(current) => {
 					    const style = {};
@@ -159,6 +166,8 @@ function ModalAddNew(props) {
 		    <div className={styles.wrapContent}>
 			    <span className={styles.titleText}>Chủ thẻ:</span>
 			    <InputCustom
+				    data={data}
+				    typeName={typeName.accountName}
 				    placeholder="Tên chủ thẻ"
 				    maxLength={50}
 				    onChangeInputCustom={onChangeInput}
@@ -167,6 +176,8 @@ function ModalAddNew(props) {
 		    <div className={styles.wrapContent}>
 			    <samp className={styles.titleText}>Số thẻ:</samp>
 			    <InputCustom
+				    data={data}
+				    typeName={typeName.cardNumber}
 				    placeholder="Mã số thẻ"
 				    maxLength={50}
 				    onChangeInputCustom={onChangeInput}
@@ -174,15 +185,37 @@ function ModalAddNew(props) {
 		    </div>
 		    <div className={styles.wrapContent}>
 			    <span className={styles.titleText}>Số tiền nhận từ khách:</span>
-			    <InputNumber style={{ width: 750 }} min={1} max={100000000000000000000} defaultValue={0} onChange={onChangeInputNumber} />
+			    <InputCustom
+				    data={data}
+				    typeInputNumber
+				    typeMoney
+				    style={{ width: 750 }}
+				    typeName={typeName.amountOfMoney}
+				    max={100000000000000000000}
+				    onChangeInputCustom={onChangeInput}
+			    />
 		    </div>
 		    <div className={styles.wrapContent}>
 			    <span className={styles.titleText}>% Phí ngân hàng: </span>
-			    <InputNumber style={{ width: 750 }} min={1} max={1000} defaultValue={0} onChange={onChangeInputNumber} />
+			    <InputCustom
+				    data={data}
+				    typeInputNumber
+				    style={{ width: 750 }}
+				    typeName={typeName.bankingFee}
+				    max={100000000}
+				    onChangeInputCustom={onChangeInput}
+			    />
 		    </div>
 		    <div className={styles.wrapContent}>
 			    <span className={styles.titleText}>% Phí thu khách:</span>
-			    <InputNumber style={{ width: 750 }} min={1} max={1000} defaultValue={0} onChange={onChangeInputNumber} />
+			    <InputCustom
+				    data={data}
+				    typeInputNumber
+				    style={{ width: 750 }}
+				    typeName={typeName.customerCharge}
+				    max={100000000}
+				    onChangeInputCustom={onChangeInput}
+			    />
 		    </div>
 		    <div className={styles.wrapContent}>
 			    <span className={styles.titleText}>Hình thức:</span>
@@ -201,7 +234,9 @@ function ModalAddNew(props) {
 		    <div>
 			    <span className={styles.titleText}>Note:</span>
 			    <InputCustom
-				    type
+				    data={data}
+				    typeName={typeName.note}
+				    typeTextArea
 				    maxLength={250}
 				    onChangeInputCustom={onChangeInput}
 			    />

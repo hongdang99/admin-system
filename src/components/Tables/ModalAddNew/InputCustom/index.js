@@ -13,39 +13,93 @@
  */
 
 import React from 'react';
-import { Input } from "antd";
 import PropTypes from 'prop-types';
+import { Input, InputNumber } from "antd";
 
 const { TextArea } = Input;
 
-function InputCustom({ placeholder, maxLength, onChangeInputCustom, type }) {
+function InputCustom(props) {
+	const {
+		style,
+		placeholder,
+		maxLength,
+		onChangeInputCustom,
+		typeTextArea,
+		typeName,
+		data,
+		typeInputNumber,
+		typeMoney
+	} = props;
 
+	const [valueInput, setValueInput] = React.useState(data[typeName]);
 	const [checkMax, setCheckMax] = React.useState(0);
+	const [checkError, setCheckError] = React.useState('');
+
+	React.useLayoutEffect(() => {
+		setValueInput(data[typeName]);
+	}, [data[typeName]])
 
 	const onChangeInput = (e) => {
 		const { value } = e.target;
-		if(value.length > 0) {
-			onChangeInputCustom(value);
+		if (value.length) {
+			setCheckError('');
 		}
+		setValueInput(value);
 		setCheckMax(value.length);
+		onChangeInputCustom(value, typeName);
 	};
+
+	const onChangeInputNumber = (values) => {
+		setCheckMax(values);
+		const valueNew = typeMoney ? `${values}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : values;
+		setValueInput(valueNew);
+		onChangeInputCustom(valueNew, typeName);
+	};
+
+	const onBlurInput = () => {
+		if (checkMax === 0) {
+			setCheckError('error');
+		}
+	};
+
+
+	if (typeInputNumber) {
+		return (
+			<InputNumber
+				max={maxLength}
+				onBlur={onBlurInput}
+				defaultValue={0}
+				value={valueInput}
+				style={{ ...style }}
+				status={(maxLength === checkMax || checkError) &&  "error"}
+				onChange={onChangeInputNumber}
+			/>
+		);
+	}
 
     return(
     	<React.Fragment>
 		    {
-			    type ? (
+			    typeTextArea ? (
 				    <TextArea
+					    value={valueInput}
+					    onBlur={onBlurInput}
 					    onChange={onChangeInput}
-				        status={maxLength === checkMax && "error"}
+				        status={maxLength === checkMax || checkError && "error"}
 					    maxLength={maxLength}
+					    showCount
 					    rows={4}
+					    style={{ marginBottom: '25px' }}
 				    />
 			    ) : (
 			    	<Input
+					    onBlur={onBlurInput}
+					    value={valueInput}
 					    autoSize
+					    showCount
 					    placeholder={placeholder}
 					    maxLength={maxLength}
-					    status={maxLength === checkMax && "error"}
+					    status={(maxLength === checkMax || checkError === 'error') && "error"}
 					    onChange={onChangeInput}
 			    />)
 		    }
@@ -56,15 +110,25 @@ function InputCustom({ placeholder, maxLength, onChangeInputCustom, type }) {
 InputCustom.propTypes = {
 	maxLength: PropTypes.number,
 
-	type: PropTypes.bool,
+	data: PropTypes.object,
+	style: PropTypes.object,
 
+	typeMoney: PropTypes.bool,
+	typeTextArea: PropTypes.bool,
+	typeInputNumber: PropTypes.bool,
+
+	typeName: PropTypes.string,
 	placeholder: PropTypes.string,
 
 	onChangeInputCustom: PropTypes.func,
 };
 
 InputCustom.defaultProps = {
-	type: false,
+	data: {},
+	style: {},
+	typeTextArea: false,
+	typeMoney: false,
+	typeInputNumber: false,
 	placeholder: 'Vui lòng nhập',
 };
 
