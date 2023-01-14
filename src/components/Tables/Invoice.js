@@ -21,6 +21,7 @@ import { Button, Input, Space, Table, Tag, Popconfirm } from "antd";
 // Component
 import ModalNote from "./ModalNote";
 import ModalAddNew from "./ModalAddNew";
+import OpenChart from "./OpenChart";
 import { dataFakeHasInvoice, listDataInvoice } from "./DataFake";
 
 // Styles
@@ -271,6 +272,7 @@ function Invoice() {
     	<div className={styles.wrapInvoice}>
 		    <div className={styles.invoiceHeader}>
 				<ModalAddNew />
+				<OpenChart />
 		    </div>
 		    <Table
 			    columns={columns}
