@@ -172,10 +172,10 @@ function Invoice() {
 		},
 		{
 			title: "Chủ thẻ",
-			dataIndex: "name",
-			key: "name",
-			...getColumnSearchProps("name", "chủ thẻ"),
-			sorter: (a, b) => a.name.length - b.name.length,
+			dataIndex: "accountName",
+			key: "accountName",
+			...getColumnSearchProps("accountName", "chủ thẻ"),
+			sorter: (a, b) => a.accountName.length - b.accountName.length,
 			sortDirections: ["descend", "ascend"]
 		},
 		{

@@ -2,7 +2,8 @@
 
 
 }
-.wrapModalAdd {
+
+.modalAddNew {
     :global {
         .ant-modal-content {
             border-radius: 20px;
@@ -19,6 +20,10 @@
             height: 29px;
             border-radius: 50%;
             background-color: #dcdcdc;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .ant-modal-close-x {
             font-size: 20px;
