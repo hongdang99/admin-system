@@ -2,6 +2,8 @@
     margin: 50px;
     .invoiceHeader {
         margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
     }
     :global {
         .ant-table-container {
