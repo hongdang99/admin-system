@@ -28,7 +28,7 @@ import { dateFormatList, today, typeName } from '../Shared/GeneralInformationTab
 import styles from './Styles/index.module.scss';
 
 // image
-import close from '../../Img/close.png';
+import close from '../../../Img/close.png';
 
 // Antd
 const provinceData = ['Rút tiền', 'Đáo'];
@@ -55,7 +55,7 @@ function ModalAddNew(props) {
 	const { isModal, onCloseModal } = props;
 
 	const initializationValue = {
-		[typeName.device]: options[0].label, // Tên thiết bị
+		[typeName.devicePost]: options[0].label, // Tên thiết bị
 		[typeName.workTime]: today(), // Ngày làm
 		[typeName.accountName]: '', // Chủ thẻ
 		[typeName.cardNumber]: '', // Số thẻ
@@ -96,7 +96,7 @@ function ModalAddNew(props) {
 
 	const onChangeDevice = (value) => {
 		// Tên thiết bị
-		setData({...data, [typeName.device]: value  });
+		setData({...data, [typeName.devicePost]: value  });
 	};
 
 	const onChangeDatePicker = (date, dateString) => {

@@ -20,7 +20,7 @@ import { Modal, Button } from 'antd';
 import styles from './Styles/index.module.scss';
 
 // image
-import close from '../../Img/close.png';
+import close from '../../../Img/close.png';
 
 function ModalNote({ open, setOpen, dataInvoice }) {
 

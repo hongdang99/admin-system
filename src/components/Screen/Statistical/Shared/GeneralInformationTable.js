@@ -26,7 +26,7 @@ const today = () => {
 };
 
 const typeName = {
-	device: 'device', // Tên thiết bị
+	devicePost: 'devicePost', // Tên máy Pos làm
 	workTime: 'workTime', // Ngày làm
 	accountName: 'accountName', // Chủ thẻ
 	cardNumber: 'cardNumber', // Số thẻ
@@ -38,6 +38,61 @@ const typeName = {
 	interestRate: 'interestRate', // Lãi
 	note: 'note',  // Note
 	tag: 'tag', // Hình thức
-};
+}
+
+const tetx = {
+	"devicePost": "QuanDX", // Tên máy Pos làm
+	"customerId": "000000000", // Id khách hàng
+	"extends": "{}", // Trường thông tin lưu thêm
+	"percentCustomer": 1.8, // % Phí thu khách
+	"percentBank": 1.2, // % Phí ngân hàng thu
+	"workTimestamp": "1673769027519", // Thời gian khách đến giao dịch
+	"money": 1000000,  // Số tiền
+}
+
+// // Tên máy Pos làm
+// devicePost: {
+// 	type: String,
+// 		require: true,
+// },
+
+// // Id khách hàng
+// customerId: {
+// 	type: String,
+// 		require: true,
+// },
+
+// // Trường thông tin lưu thêm
+// extends: {
+// 	type: String,
+// 		require: true,
+// default: new Date().getTime(),
+// },
+
+// // Phí thu khách
+// percentCustomer: {
+// 	type: Number,
+// 		require: true,
+// default: new Date().getTime(),
+// },
+
+// // Phí ngân hàng thu
+// percentBank: {
+// 	type: Number,
+// 		require: true,
+// default: new Date().getTime(),
+// },
+
+// // Thời gian khách đến giao dịch
+// workTimestamp: {
+// 	type: String,
+// default: new Date().getTime(),
+// },
+
+// // Thời gian khởi tạo trong database
+// timestamp: {
+// 	type: String,
+// default: new Date().getTime(),
+// },
 
 export { dateFormatList, today, typeName };

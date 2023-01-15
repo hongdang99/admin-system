@@ -17,14 +17,14 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button, Modal } from 'antd';
 
 // Component
-import ChartColumn from "../../ChartsColumn";
+import ChartColumn from "../../../ChartsColumn";
 
 // Style
 import styles from './Styles/index.module.scss';
 
 // image
-import close from '../../Img/close.png';
-import ChartPercent from "../../ChartPercent";
+import close from '../../../Img/close.png';
+import ChartPercent from "../../../ChartPercent";
 
 function OpenChart() {
     const [isModalOpen, setIsModalOpen] = React.useState(false);

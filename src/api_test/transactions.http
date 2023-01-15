@@ -1,0 +1,23 @@
+### GET_LIST
+GET https://backend-truelove.vercel.app/api/transaction
+version: v.0.0.0
+
+### POST
+POST https://backend-truelove.vercel.app/api/transaction
+Content-Type: application/json
+version: v.0.0.0
+
+{
+	"devicePost": "QuanDX",
+	"customerId": "000000000",
+	"extends": "{}",
+	"percentCustomer": 1.8,
+	"percentBank": 1.2,
+	"workTimestamp": "1673769027519",
+	"money": 1000000
+}
+
+### DELETE
+DELETE https://backend-truelove.vercel.app/api/transaction/63c3cf83e8a8320008dc9cb7
+Content-Type: application/json
+version: v.0.0.0

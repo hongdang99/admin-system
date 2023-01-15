@@ -13,7 +13,6 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag, Popconfirm } from "antd";
@@ -28,9 +27,9 @@ import { dataFakeHasInvoice, listDataInvoice } from "./DataFake";
 import styles from './Styles/index.module.scss';
 
 // Img
-import note from '../Img/notes.png';
+import note from '../../Img/notes.png';
 
-function Invoice() {
+function Statistical() {
 	const [searchText, setSearchText] = React.useState("");
 	const [searchedColumn, setSearchedColumn] = React.useState("");
 	const searchInput = React.useRef(null);
@@ -288,8 +287,4 @@ function Invoice() {
     );
 }
 
-Invoice.propTypes = {};
-
-Invoice.defaultProps = {};
-
-export default Invoice;
+export default Statistical;

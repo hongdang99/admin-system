@@ -1,0 +1,15 @@
+.menuTop {
+    max-width: 100vw;
+    background: #001529;
+    padding: 10px 4px;
+    border-bottom: 0.1px solid #1677FF;
+
+    .btn {
+        height: 40px;
+        padding: 0 28px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

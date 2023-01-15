@@ -1,0 +1,19 @@
+.content {
+    display: flex;
+    flex-direction: row;
+
+    .menuLeft {
+        height: 100%;
+        min-height: 100vh;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    .viewScreen {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
+}
+
