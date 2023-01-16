@@ -18,6 +18,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag, Popconfirm } from "antd";
 
 // Component
+import SelectOption from "./SelectOption";
 import ModalNote from "./ModalNote";
 import ModalAddNew from "./ModalAddNew";
 import OpenChart from "./OpenChart";
@@ -270,8 +271,13 @@ function Statistical() {
     return(
     	<div className={styles.wrapInvoice}>
 		    <div className={styles.invoiceHeader}>
-				<ModalAddNew />
-				<OpenChart />
+			    <div className={styles.contentLeft}>
+				    <ModalAddNew />
+				    <SelectOption />
+			    </div>
+			    <div className={styles.contentRight}>
+				    <OpenChart />
+			    </div>
 		    </div>
 		    <Table
 			    columns={columns}

@@ -17,16 +17,44 @@ import axios from "axios";
 // Config
 import { API_URL } from './Config';
 
-export default function CallApi(
+export default function ApiAddData(
 	method = "get",
 	url = API_URL,
-	body
+	body,
+	onSuccess,
+	onFailure,
 ) {
 	return axios({
 		method: method,
 		url: url,
 		data: body,
+	}).then((response) => {
+		onSuccess();
 	}).catch((error) => {
-		throw new Error("Lỗi say ra khi call API vui lòng kiểm tra lại ==========>: ", error);
+		onFailure();
+		throw new Error('[[ERROR]]:Add data lỗi vui lòng kiểm tra lại:', error);
 	});
 }
+
+// import axios from 'axios';
+// async function CallApi(url, onSuccess, onFailure) {
+// 	await axios
+// 		.get(`${url}`, {
+// 			headers: {
+// 				'Content-Type': 'application/json',
+// 				'version': 'v.0.0.0'
+// 			},
+// 		})
+// 		.then((response) => {
+// 			if(response === 200) {
+// 				console.log('response: =======[ Thành công ]========>', response); // Log QuanDX fix bug
+// 				onSuccess();
+// 			}
+// 		})
+// 		.catch((error) => {
+// 			onFailure();
+// 			throw new Error('[[ERROR]]:Gọi api lấy danh sách thông kê bị lỗi:', error);
+// 		});
+// }
+//
+// export default CallApi;

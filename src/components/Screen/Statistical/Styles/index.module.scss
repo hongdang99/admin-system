@@ -2,7 +2,13 @@
     .invoiceHeader {
         margin-bottom: 10px;
         display: flex;
+        align-items: center;
         justify-content: space-between;
+        .contentLeft {
+            display: flex;
+            flex-direction: row;
+        }
+        .contentRight {}
     }
     :global {
         .ant-table-container {

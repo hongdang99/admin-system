@@ -13,12 +13,27 @@
  */
 
 import React from 'react';
-import {Button} from "antd";
 import PropTypes from 'prop-types';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { Button, Dropdown } from "antd";
+import { MenuFoldOutlined, MenuUnfoldOutlined, PoweroffOutlined } from "@ant-design/icons";
+
+// Component
+import Avatar from '../../Avatar';
 
 // Style
 import styles from  './Styles/index.module.scss';
+
+const items = [
+	{
+		key: '1',
+		label: (
+			<div className={styles.wrapLogout}>
+				<PoweroffOutlined />
+				<span className={styles.text}>Đăng xuất</span>
+			</div>
+		),
+	},
+];
 
 function MenuTop(props) {
 	const { collapsed, setCollapsed } = props;
@@ -36,6 +51,17 @@ function MenuTop(props) {
 		    >
 			    {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
 		    </Button>
+		    <Dropdown
+			    menu={{
+				    items,
+			    }}
+			    placement="bottomLeft"
+			    arrow
+		    >
+			    <Button className={styles.avatar}>
+				    <Avatar url='https://i.pinimg.com/564x/b3/ac/d9/b3acd9852dcb091868874a6534f3e2cd.jpg' className={styles.contentAvatar} />
+			    </Button>
+		    </Dropdown>
 	    </div>
     );
 }
