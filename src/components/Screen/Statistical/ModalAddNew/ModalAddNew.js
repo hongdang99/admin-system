@@ -14,9 +14,11 @@
 
 
 import React from 'react';
+import "dayjs/locale/vi";
 import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { Modal, DatePicker, Select } from 'antd';
+import locale from 'antd/es/date-picker/locale/vi_VN';
 
 // Component
 import InputCustom from "./InputCustom";
@@ -145,6 +147,7 @@ function ModalAddNew(props) {
 				    style={{
 					    width: 750,
 				    }}
+				    locale={locale}
 				    placeholder="Chọn ngày làm"
 				    onChange={onChangeDatePicker}
 				    defaultValue={dayjs(today(), dateFormatList[0])}

@@ -16,6 +16,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 
+// Base
+import { flagInput } from "../../../Base/Validate/FlagInput";
+
 // Style
 import styles from './Styles/index.module.scss';
 
@@ -23,13 +26,26 @@ import styles from './Styles/index.module.scss';
 import EyeView from '../../../Img/eyeView.png';
 import EyeHide from '../../../Img/eyeHide.png';
 
-const  InputLogin = React.forwardRef((props, ref) => {
+const InputLogin = React.forwardRef((props, ref) => {
 	const { className, type, onBlurInput, onFocusInput, messageError } = props;
+
+	const { TYPE_PASSWORD, SUCCESS } = flagInput;
 
 	const [isView, setIsView] = React.useState(true);
 
 	const refInput =  React.useRef(null);
 	React.useImperativeHandle(ref, () => refInput.current);
+
+	const showError = () => {
+		let showTextError;
+		const errorText = messageError && messageError[type];
+		if (errorText === SUCCESS) {
+			showTextError = ''
+		} else {
+			showTextError = errorText;
+		}
+		return showTextError;
+	};
 
 	const handleBlur = (e) => {
 		onBlurInput(type, e);
@@ -46,7 +62,7 @@ const  InputLogin = React.forwardRef((props, ref) => {
     return(
     	<React.Fragment>
 		    {
-			    type === 'password' ? (
+			    type === TYPE_PASSWORD ? (
 				    <div className={ClassNames(styles.wrapPasswordInputLogin, className)}>
 					    <div>
 						    <input
@@ -54,22 +70,26 @@ const  InputLogin = React.forwardRef((props, ref) => {
 							    type={isView ? type : 'text'}
 							    onBlur={handleBlur}
 							    onFocus={handleFocus}
-							    className={ClassNames(styles.input, messageError && styles.inputError)}
+							    className={ClassNames(styles.input, showError() && styles.inputError)}
 						    />
 						    <img alt='icon Eye' src={isView ? EyeView : EyeHide} className={styles.iconEye} onClick={onClickIconEye} />
 					    </div>
 					    {
-						    messageError && <span className={styles.textError}>{messageError}</span>
+						    showError() && <span className={styles.textError}>{showError()}</span>
 					    }
 				    </div>
 			    ) : (
 				    <div className={ClassNames(styles.wrapTextInputLogin, className)}>
 					    <input
 						    type={type}
+						    ref={refInput}
 						    onBlur={handleBlur}
 						    onFocus={handleFocus}
-						    className={ClassNames(styles.input, messageError && styles.inputError)}
+						    className={ClassNames(styles.input, showError() && styles.inputError)}
 					    />
+					    {
+						    showError() && <span className={styles.textError}>{showError()}</span>
+					    }
 				    </div>
 			    )
 		    }

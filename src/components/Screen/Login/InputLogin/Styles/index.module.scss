@@ -21,17 +21,21 @@
     font-size: 15px;
     outline: none;
 }
+
 .inputError {
     border: 1px solid red;
 }
+
 .textError {
     font-style: normal;
     line-height: 22px;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 13px;
     color: red;
 }
 
 .wrapTextInputLogin {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
 }

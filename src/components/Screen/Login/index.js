@@ -15,6 +15,7 @@
 import React from 'react';
 
 // Component
+import useLogin from "./useLogin";
 import InputLogin from "./InputLogin";
 
 // Style
@@ -24,15 +25,26 @@ import styles from './Styles/index.module.scss';
 import Logo from '../../Img/login.png';
 
 function Login() {
-	const [messageError, setMessageError] = React.useState('');
-	const refInputEmail =  React.useRef(null);
+	const {
+		messageError,
+		setMessageError,
+		refInputEmail,
+		refInputPassword,
+		onBlurInput,
+		onFocusInput,
+		checkAllInput,
+		TYPE_EMAIL,
+		TYPE_PASSWORD,
+		SUCCESS,
+	} = useLogin();
 
-	const onBlurInput = (type) => {
-		console.log('type: ================>', type); // Log QuanDX fix bug
-	};
+	const { Email, Password } = messageError;
 
-	const onFocusInput = (type) => {
-		console.log('type: ================>', type); // Log QuanDX fix bug
+	const onLogin = () => {
+		setMessageError(checkAllInput());
+		if (Email === SUCCESS && Password === SUCCESS) {
+			alert("Đăng nhập thành công.");
+		}
 	};
 
     return(
@@ -42,18 +54,25 @@ function Login() {
 					<img className={styles.imgLogin} alt='login' src={Logo} />
 		        </div>
 		        <div className={styles.contentLoginRight}>
-					<span className={styles.title}>Sign In</span>
-			        <span className={styles.text}>Email Address</span>
+					<span className={styles.title}>Đăng nhập</span>
+			        <span className={styles.text}>Email</span>
 			        <InputLogin
-				        type='text'
+				        type={TYPE_EMAIL}
 				        ref={refInputEmail}
 				        onBlurInput={onBlurInput}
 				        onFocusInput={onFocusInput}
 				        messageError={messageError}
 			        />
-			        <span className={styles.text}>Password</span>
-			        <InputLogin type='password' />
-			        <button className={styles.btnLogin}>Sign In</button>
+			        <span className={styles.text}>Mật khẩu</span>
+			        <InputLogin
+				        type={TYPE_PASSWORD}
+				        ref={refInputPassword}
+				        onBlurInput={onBlurInput}
+				        onFocusInput={onFocusInput}
+				        placeholder={TYPE_PASSWORD}
+				        messageError={messageError}
+			        />
+			        <button className={styles.btnLogin}  onClick={onLogin}>Đăng nhập</button>
 		        </div>
 	        </div>
         </div>
