@@ -22,12 +22,12 @@ import Contents from './Contents';
 import styles from './Styles/index.module.scss';
 
 function Main() {
-	const [collapsed, setCollapsed] = React.useState(false);
+    const [collapsed, setCollapsed] = React.useState(false);
 
-    return(
+    return (
         <div className={styles.wrapMain}>
-	        <MenuTop collapsed={collapsed} setCollapsed={setCollapsed} />
-	        <Contents collapsed={collapsed} />
+            <MenuTop collapsed={collapsed} setCollapsed={setCollapsed} />
+            <Contents collapsed={collapsed} />
         </div>
     );
 }
