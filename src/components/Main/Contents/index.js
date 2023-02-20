@@ -12,9 +12,11 @@
  * @modifier abc@bkav.com on xx/xx/xxxx đã chỉnh sửa abcxyx (Chỉ các thay đổi quan trọng mới cần ghi lại note này)
  */
 
-import React from 'react';
+// lib
+import React, { Suspense } from 'react';
 import { Menu } from 'antd';
 import PropTypes from 'prop-types';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import {
 	UserOutlined,
 	PieChartOutlined,
@@ -24,13 +26,17 @@ import {
 	UsergroupAddOutlined,
 } from '@ant-design/icons';
 
-// Component
-import ScreenContext from "../../../context/screenContext";
-const Statistical = React.lazy(() => import('../../Screen/Statistical'));
+// Components
+import Loading from '../../Loading';
 
-/* eslint-disable */
+// Utils
+import ROUTES from '../../../utils/const/namerouter';
+
 // Style
 import styles from './Styles/index.module.scss';
+
+// const component 
+const Statistical = React.lazy(() => import('../../Screen/Statistical'));
 
 function getItem(label, key, icon, children, type) {
 	return {
@@ -43,12 +49,12 @@ function getItem(label, key, icon, children, type) {
 }
 
 const items = [
-	getItem('Thống kê', 'statistical', <PieChartOutlined />),
-	getItem('Giao dịch', 'transaction',<TransactionOutlined />),
-	getItem('Lịch đáo thẻ', 'calendar', <CalendarOutlined />),
-	getItem('Khách hàng', 'customer', <UsergroupAddOutlined />),
-	getItem('Nhân viên', 'staff', <UserOutlined />),
-	getItem('Quản lý tài khoản', 'accountManagement', <AppstoreAddOutlined />),
+	getItem('Thống kê', ROUTES.STATISTICAL, <PieChartOutlined />),
+	getItem('Giao dịch', ROUTES.TRANSACTIONS, <TransactionOutlined />),
+	getItem('Lịch đáo thẻ', ROUTES.CALENDAR, <CalendarOutlined />),
+	getItem('Khách hàng', ROUTES.CUMTOMER, <UsergroupAddOutlined />),
+	getItem('Nhân viên', ROUTES.STAFF, <UserOutlined />),
+	getItem('Quản lý tài khoản', ROUTES.ACCOUNT_MANAGEMENT, <AppstoreAddOutlined />),
 ];
 
 function About() {
@@ -59,46 +65,47 @@ function About() {
 	);
 }
 
-function Contents(props) {
-	const { collapsed } = props;
-	const {setScreen, screen} = React.useContext(ScreenContext);
+function Contents({ collapsed }) {
+	const navigate = useNavigate();
 
 	const onClickItem = (event) => {
-		setScreen(event.key)
+		console.log('event.key:', event.key);
+		navigate(event.key);
 	};
 
-	const renderScreen = () => {
-		switch (screen) {
-			case 'transaction':
-				return <About />;
-			default:
-				return <Statistical />;
-		}
-	};
-
-    return(
-	    <div className={styles.content}>
-		    <div
-			    style={{
-				    width: !collapsed && 220,
-			    }}
-		    >
-			    <Menu
-				    className={styles.menuLeft}
-				    defaultSelectedKeys={[screen]}
-				    defaultOpenKeys={[screen]}
-				    mode="inline"
-				    theme="dark"
-				    inlineCollapsed={collapsed}
-				    items={items}
-				    onClick={onClickItem}
-			    />
-		    </div>
-		    <div className={styles.viewScreen}>
-			    {renderScreen()}
-		    </div>
-	    </div>
-    );
+	return (
+		<div className={styles.content}>
+			<div
+				style={{
+					width: !collapsed && 220,
+				}}
+			>
+				<Menu
+					className={styles.menuLeft}
+					// defaultSelectedKeys={[screen]}
+					// defaultOpenKeys={[screen]}
+					mode="inline"
+					theme="dark"
+					inlineCollapsed={collapsed}
+					items={items}
+					onClick={onClickItem}
+				/>
+			</div>
+			<div className={styles.viewScreen}>
+				<Suspense fallback={<Loading />}>
+					<Routes>
+						<Route path={ROUTES.STATISTICAL} element={<About />} />
+						<Route path={ROUTES.TRANSACTIONS} element={<Statistical />} />
+						<Route path={ROUTES.CALENDAR} element={<About />} />
+						<Route path={ROUTES.CUMTOMER} element={<About />} />
+						<Route path={ROUTES.STAFF} element={<About />} />
+						<Route path={ROUTES.ACCOUNT_MANAGEMENT} element={<About />} />
+						<Route path='*' element={<About />} />
+					</Routes>
+				</Suspense>
+			</div>
+		</div>
+	);
 }
 
 Contents.propTypes = {

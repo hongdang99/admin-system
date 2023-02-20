@@ -1,20 +1,20 @@
+// lib
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-// Component
-import Main from "./components/Main";
-import Login from "./components/Screen/Login";
-import ScreenContext from "./context/screenContext";
+// Utils
+import ROUTES from './utils/const/namerouter';
 
-{/*<Invoice />*/}
+// const route
+const Login = React.lazy(() => import('./components/Screen/Login'));
+const Main = React.lazy(() => import('./components/Main'));
 
-function App()  {
-	// Mặc định là trang thống kê
-	const [screen, setScreen] = React.useState('statistical');
+function App() {
 	return (
-		<ScreenContext.Provider value={{setScreen, screen}}>
-			<Login />
-			{/* <Main /> */}
-		</ScreenContext.Provider >
+		<Routes>
+			<Route path={ROUTES.LOGIN} element={<Login />} />
+			<Route path='*' element={<Main />} />
+		</Routes>
 	);
 }
 

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
 // Component
 import App from './App';
+import Loading from './components/Loading';
 import reportWebVitals from './reportWebVitals';
 
 // Style
@@ -12,7 +14,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
 	<React.StrictMode>
-		<App />
+		<BrowserRouter>
+			<Suspense fallback={<Loading style={{ height: window.innerHeight }} />}>
+				<App />
+			</Suspense>
+		</BrowserRouter>
 	</React.StrictMode>
 );
 
