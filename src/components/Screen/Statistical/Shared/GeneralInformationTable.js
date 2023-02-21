@@ -12,32 +12,38 @@
  * @modifier abc@bkav.com on xx/xx/xxxx đã chỉnh sửa abcxyx (Chỉ các thay đổi quan trọng mới cần ghi lại note này)
  */
 
-const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
+import moment from "moment";
+
+const dateFormatList = ["DD/MM/YYYY"];
 
 const today = () => {
 	const dates = new Date();
 	return (
-		("0" + dates.getDate()).slice(-2) +
-		"/" +
-		("0" + (dates.getMonth() + 1)).slice(-2) +
-		"/" +
-		dates.getFullYear()
+		("0" + dates.getDate()).slice(-2) + "/" + ("0" + (dates.getMonth() + 1)).slice(-2) + "/" +dates.getFullYear()
 	);
+};
+
+const todayMoment = () => {
+	const todayNew = today();
+	// Todo check lại đoạn này
+	console.log('todayNew: =======555=========>', todayNew); // Log QuanDX fix bug
+	// return moment(`"${todayNew}"`).valueOf();
+	return moment("22/02/2023").valueOf();
 };
 
 const typeName = {
 	devicePost: 'devicePost', // Tên máy Pos làm
-	workTime: 'workTime', // Ngày làm
+	workTimestamp: 'workTimestamp', // Ngày làm
 	accountName: 'accountName', // Chủ thẻ
 	cardNumber: 'cardNumber', // Số thẻ
-	amountOfMoney: 'amountOfMoney', // Số tiền
-	bankingFee: 'bankingFee', // % Phí ngân hàng
+	money: 'money', // Số tiền
+	percentBank: 'percentBank', // % Phí ngân hàng
 	bankFees: 'bankFees', // Phí ngân hàng
-	customerCharge: 'customerCharge', // % Phí thu khách
+	percentCustomer: 'percentCustomer', // % Phí thu khách
 	fees: 'fees', // Phí thu
 	interestRate: 'interestRate', // Lãi
-	note: 'note',  // Note
-	tag: 'tag', // Hình thức
+	extends: 'extends',  // Note
+	type: 'type', // Hình thức
 }
 
 const tetx = {
@@ -95,4 +101,4 @@ const tetx = {
 // default: new Date().getTime(),
 // },
 
-export { dateFormatList, today, typeName };
+export { dateFormatList, today, todayMoment, typeName };

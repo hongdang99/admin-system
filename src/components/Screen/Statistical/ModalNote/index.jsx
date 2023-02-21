@@ -38,7 +38,7 @@ function ModalNote({ open, setOpen, dataInvoice }) {
 	const customerCharge = dataInvoice.customerCharge || "";
 	const fees = dataInvoice.fees || "0 vnđ";
 	const interestRate = dataInvoice.interestRate || "0 vnđ";
-	const note = dataInvoice.note || "";
+	const note = dataInvoice.extends || "";
 	const tag = dataInvoice.tag || "";
 
 	return(
