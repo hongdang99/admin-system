@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 
 // Base
-import { flagInput } from "../../../Base/Validate/FlagInput";
+import { flagInput } from "../../../Base/Regex/FlagInput";
 
 // Style
 import styles from './Styles/index.module.scss';

@@ -17,6 +17,7 @@ import PropTypes from 'prop-types';
 import { Input, InputNumber } from "antd";
 
 // Shared
+import { isCheckNumber } from "../../../../Base/Regex/validationNumber";
 import { typeName as typeNames } from "../../Shared/GeneralInformationTable";
 
 // Style
@@ -39,8 +40,6 @@ function InputCustom(props) {
 	const [valueInput, setValueInput] = React.useState(data[typeName]);
 	const [checkMax, setCheckMax] = React.useState(0);
 	const [checkError, setCheckError] = React.useState('');
-
-	const refInputCustom = React.useRef(null);
 
 	React.useLayoutEffect(() => {
 		setValueInput(data[typeName]);
@@ -74,11 +73,9 @@ function InputCustom(props) {
 	};
 
 	const onBlurInput = () => {
-		const isNumber = /^\d+$/;
 		if (!valueInput) {
-			refInputCustom.current.focus();
 			setCheckError('Dữ liệu không được để trống, vui lòng nhập.')
-		} else if(typeName === typeNames.cardNumber && !isNumber.test(valueInput)) {
+		} else if(typeName === typeNames.cardNumber && !isCheckNumber(valueInput)) {
 			setCheckError('Dữ liệu nhập vào không được phép chứa "Text".')
 		} else  {
 			onChangeInputCustom(valueInput, typeName);
@@ -90,11 +87,11 @@ function InputCustom(props) {
 		return (
 			<div className={styles.wrapInputCustom}>
 				<InputNumber
+					size="large"
 					max={maxLength}
 					defaultValue={0}
 					value={valueInput}
 					onBlur={onBlurInput}
-					ref={refInputCustom}
 					onChange={onChangeInputNumber}
 					style={{...style, width: '100%'}}
 					status={(maxLength === checkMax || checkError) &&  "error"}
@@ -125,9 +122,9 @@ function InputCustom(props) {
 			    	<Input
 					    autoSize
 					    showCount
+					    size="large"
 					    value={valueInput}
 					    onBlur={onBlurInput}
-					    ref={refInputCustom}
 					    maxLength={maxLength}
 					    onChange={onChangeInput}
 					    placeholder={placeholder}

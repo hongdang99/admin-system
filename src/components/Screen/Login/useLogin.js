@@ -17,8 +17,8 @@
 import React from "react";
 
 // Base
-import { flagInput } from "../../Base/Validate/FlagInput";
-import { validateInputEmail } from "../../Base/Validate/checkRegex";
+import { flagInput } from "../../Base/Regex/FlagInput";
+import { validateInputEmail } from "../../Base/Regex/checkRegex";
 
 function useLogin() {
     const { TYPE_EMAIL, TYPE_PASSWORD, SUCCESS } = flagInput;

@@ -12,8 +12,6 @@
  * @modifier abc@bkav.com on xx/xx/xxxx đã chỉnh sửa abcxyx (Chỉ các thay đổi quan trọng mới cần ghi lại note này)
  */
 
-import moment from "moment";
-
 const dateFormatList = ["DD/MM/YYYY"];
 
 const today = () => {
@@ -23,13 +21,19 @@ const today = () => {
 	);
 };
 
-const todayMoment = () => {
-	const todayNew = today();
-	// Todo check lại đoạn này
-	console.log('todayNew: =======555=========>', todayNew); // Log QuanDX fix bug
-	// return moment(`"${todayNew}"`).valueOf();
-	return moment("22/02/2023").valueOf();
+const convertMDY = (dateStringDMY) => {
+	const dataNew = dateStringDMY || today();
+	const parts = dataNew.split('/');
+	return parts[1] + '/' + parts[0] + '/' + parts[2];
 };
+
+
+const convertTimeStamp = (dateStringMDY) => {
+	const dateString = dateStringMDY || convertMDY();
+	const dateObject = new Date(dateString);
+	return dateObject.getTime();
+};
+
 
 const typeName = {
 	devicePost: 'devicePost', // Tên máy Pos làm
@@ -46,59 +50,4 @@ const typeName = {
 	type: 'type', // Hình thức
 }
 
-const tetx = {
-	"devicePost": "QuanDX", // Tên máy Pos làm
-	"customerId": "000000000", // Id khách hàng
-	"extends": "{}", // Trường thông tin lưu thêm
-	"percentCustomer": 1.8, // % Phí thu khách
-	"percentBank": 1.2, // % Phí ngân hàng thu
-	"workTimestamp": "1673769027519", // Thời gian khách đến giao dịch
-	"money": 1000000,  // Số tiền
-}
-
-// // Tên máy Pos làm
-// devicePost: {
-// 	type: String,
-// 		require: true,
-// },
-
-// // Id khách hàng
-// customerId: {
-// 	type: String,
-// 		require: true,
-// },
-
-// // Trường thông tin lưu thêm
-// extends: {
-// 	type: String,
-// 		require: true,
-// default: new Date().getTime(),
-// },
-
-// // Phí thu khách
-// percentCustomer: {
-// 	type: Number,
-// 		require: true,
-// default: new Date().getTime(),
-// },
-
-// // Phí ngân hàng thu
-// percentBank: {
-// 	type: Number,
-// 		require: true,
-// default: new Date().getTime(),
-// },
-
-// // Thời gian khách đến giao dịch
-// workTimestamp: {
-// 	type: String,
-// default: new Date().getTime(),
-// },
-
-// // Thời gian khởi tạo trong database
-// timestamp: {
-// 	type: String,
-// default: new Date().getTime(),
-// },
-
-export { dateFormatList, today, todayMoment, typeName };
+export { dateFormatList, today, convertMDY, convertTimeStamp, typeName };

@@ -14,20 +14,21 @@
 
 import React from 'react';
 import "dayjs/locale/vi";
-import dayjs from 'dayjs';
 import axios from "axios";
-import moment from 'moment';
 import PropTypes from 'prop-types';
+import { Modal, Select, message } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
-import locale from 'antd/es/date-picker/locale/vi_VN';
-import { Modal, DatePicker, Select, message } from 'antd';
 
 // Component
 import InputCustom from "./InputCustom";
 import AutoCompleteCustom from "./AutoCompleteCustom";
 
 // Shared
-import { dateFormatList, today, typeName, todayMoment } from '../Shared/GeneralInformationTable';
+import DatePickerComponent from '../Shared/DatePickerComponent';
+import { typeName, convertTimeStamp } from '../Shared/GeneralInformationTable';
+
+// Util
+import { API_URL } from "../../../../utils/Config";
 
 // Style
 import styles from './Styles/index.module.scss';
@@ -65,30 +66,20 @@ const optionsPercentBank = [
 
 const { confirm } = Modal;
 
-
 function ModalAddNew(props) {
 	const { isModal, onCloseModal } = props;
-
-	// console.log('todayMoment(): ========555555========>', todayMoment()); // Log QuanDX fix bug
-
-	const check = () => {
-		const test = '22/02/2023';
-		return moment(today()).valueOf();
-	}
-
-	console.log('check(): ================>', check()); // Log QuanDX fix bug
 
 	const initializationValue = {
 		customerId: "000000000",
 		[typeName.devicePost]: '', // Tên thiết bị
-		[typeName.workTimestamp]: 1111111, // Ngày làm
+		[typeName.workTimestamp]: convertTimeStamp(), // Ngày làm
 		[typeName.accountName]: '', // Chủ thẻ
 		[typeName.cardNumber]: '', // Số thẻ
 		[typeName.money]: 0, // Số tiền
 		[typeName.percentBank]: 0, // % Phí ngân hàng
 		[typeName.percentCustomer]: 0, // % Phí thu khách
 		[typeName.type]: provinceDataType[0], // Hình thức
-		[typeName.extends]: '{}', // Note
+		[typeName.extends]: '', // Note
 	};
 
 	// All Data Modal Add news
@@ -134,34 +125,9 @@ function ModalAddNew(props) {
 	};
 
 	const callApiAdd = () => {
-		const test = {
-				devicePost: "Tạp hóa ACB",
-				customerId: "000000000",
-				extends: {},
-				percentCustomer: 1.8,
-				percentBank: 1.2,
-				workTimestamp: 1111111,
-				money: 1000000,
-				type: "Rút tiền"
-			// accountName: "OK",
-			// cardNumber: "03870911089"
-		}
-		const datas = JSON.stringify(test);
-		console.log('data: ========= Axios =======>', data); // Log QuanDX fix bug
-		// console.log('dataConvert: ================>', datas); // Log QuanDX fix bug
 		axios({
 			method: "post",
-			url: 'https://backend-truelove.vercel.app/api/transaction',
-			// data: {
-			// 	"devicePost": "Tạp hóa ACB",
-			// 	"customerId": "000000000",
-			// 	"extends": "{}",
-			// 	"percentCustomer": 1.8,
-			// 	"percentBank": 1.2,
-			// 	"workTimestamp": 1111111,
-			// 	"money": 1000000,
-			// 	"type": "Rút tiền"
-			// },
+			url: API_URL,
 			data: {...data},
 		}).then((response) => {
 			if (response.status === 200) {
@@ -186,12 +152,8 @@ function ModalAddNew(props) {
 		}
 	};
 
-	const onChangeDatePicker = (date, dateString) => {
-		// Chọn ngày làm
-		const dataPicker = moment(dateString).valueOf();
-		console.log('dateString: ================>', dateString); // Log QuanDX fix bug
-		console.log('dataPicker: ================>', dataPicker); // Log QuanDX fix bug
-		setData({ ...data, [typeName.workTimestamp]: dataPicker });
+	const  onDatePicker = (dataTimeStamp) => {
+		setData({ ...data, [typeName.workTimestamp]: dataTimeStamp });
 	};
 
 	const onChangeTag = (value) => {
@@ -209,7 +171,7 @@ function ModalAddNew(props) {
 		<Modal
 			title="Thêm mới khách hàng"
 			centered
-			width={800}
+			width={900}
 			okText="Lưu"
 			cancelText="Đóng"
 			onOk={onOkModal}
@@ -231,25 +193,9 @@ function ModalAddNew(props) {
 			</div>
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>Ngày làm:</span>
-				<DatePicker
-					locale={locale}
-					format={dateFormatList}
-					style={{ width: '100%' }}
-					placeholder="Chọn ngày làm"
-					onChange={onChangeDatePicker}
-					defaultValue={dayjs(today(), dateFormatList[0])}
-					dateRender={(current) => {
-						const style = {};
-						if (current.date() === 1) {
-							style.border = "1px solid #1890ff";
-							style.borderRadius = "50%";
-						}
-						return (
-							<div className="ant-picker-cell-inner" style={style}>
-								{current.date()}
-							</div>
-						);
-					}}
+				<DatePickerComponent
+					style={{width: '100%'}}
+					onDatePicker={onDatePicker}
 				/>
 			</div>
 			<div className={styles.wrapContent}>
@@ -303,9 +249,10 @@ function ModalAddNew(props) {
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>Hình thức:</span>
 				<Select
-					defaultValue={provinceDataType[0]}
+					size="large"
 					onChange={onChangeTag}
 					style={{ width: '100%' }}
+					defaultValue={provinceDataType[0]}
 					options={provinceDataType.map((province) => ({
 						label: province,
 						value: province,

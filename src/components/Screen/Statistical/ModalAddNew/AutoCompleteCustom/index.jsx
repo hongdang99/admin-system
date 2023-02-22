@@ -32,8 +32,6 @@ function AutoCompleteCustom(props) {
 	const [value, setValue] = React.useState('');
 	const [checkError, setCheckError] = React.useState('');
 
-	const refAutoComplete = React.useRef(null);
-
 	const onChange = (value) => {
 		let valueNew;
 		if (isText) {
@@ -47,10 +45,8 @@ function AutoCompleteCustom(props) {
 
 	const onblurAutoComplete = () => {
 		if (value === '') {
-			refAutoComplete.current.focus();
 			setCheckError('Dữ liệu không được để trống, vui lòng nhập.')
 		} else if(!value && !isText) {
-			refAutoComplete.current.focus();
 			setCheckError('Dữ liệu nhập vào không được phép chứ "Text", vui lòng kiểm tra lại.')
 		} else {
 			onChangeInputCustom(value, typeName);
@@ -67,9 +63,9 @@ function AutoCompleteCustom(props) {
         <div className={styles.wrapAutoComplete}>
 	        <AutoComplete
 		        allowClear
+		        size="large"
 		        onChange={onChange}
 		        options={optionsData}
-		        ref={refAutoComplete}
 		        placeholder={placeholder}
 		        onBlur={onblurAutoComplete}
 		        filterOption={onFilterOption}
