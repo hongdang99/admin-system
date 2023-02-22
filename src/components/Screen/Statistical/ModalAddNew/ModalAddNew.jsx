@@ -79,15 +79,16 @@ function ModalAddNew(props) {
 	console.log('check(): ================>', check()); // Log QuanDX fix bug
 
 	const initializationValue = {
+		customerId: "000000000",
 		[typeName.devicePost]: '', // Tên thiết bị
-		[typeName.workTimestamp]: todayMoment(), // Ngày làm
+		[typeName.workTimestamp]: 1111111, // Ngày làm
 		[typeName.accountName]: '', // Chủ thẻ
 		[typeName.cardNumber]: '', // Số thẻ
 		[typeName.money]: 0, // Số tiền
 		[typeName.percentBank]: 0, // % Phí ngân hàng
 		[typeName.percentCustomer]: 0, // % Phí thu khách
 		[typeName.type]: provinceDataType[0], // Hình thức
-		[typeName.extends]: '', // Note
+		[typeName.extends]: '{}', // Note
 	};
 
 	// All Data Modal Add news
@@ -136,7 +137,7 @@ function ModalAddNew(props) {
 		const test = {
 				devicePost: "Tạp hóa ACB",
 				customerId: "000000000",
-				extends: "{}",
+				extends: {},
 				percentCustomer: 1.8,
 				percentBank: 1.2,
 				workTimestamp: 1111111,
@@ -151,17 +152,17 @@ function ModalAddNew(props) {
 		axios({
 			method: "post",
 			url: 'https://backend-truelove.vercel.app/api/transaction',
-			data: {
-				"devicePost": "Tạp hóa ACB",
-				"customerId": "000000000",
-				"extends": "{}",
-				"percentCustomer": 1.8,
-				"percentBank": 1.2,
-				"workTimestamp": 1111111,
-				"money": 1000000,
-				"type": "Rút tiền"
-			},
-			// data: {...datas},
+			// data: {
+			// 	"devicePost": "Tạp hóa ACB",
+			// 	"customerId": "000000000",
+			// 	"extends": "{}",
+			// 	"percentCustomer": 1.8,
+			// 	"percentBank": 1.2,
+			// 	"workTimestamp": 1111111,
+			// 	"money": 1000000,
+			// 	"type": "Rút tiền"
+			// },
+			data: {...data},
 		}).then((response) => {
 			if (response.status === 200) {
 				onSuccess();
