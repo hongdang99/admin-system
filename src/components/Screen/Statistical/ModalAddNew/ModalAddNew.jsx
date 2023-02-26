@@ -121,7 +121,7 @@ function ModalAddNew(props) {
 	};
 
 	const onOkModal = () => {
-		console.log('data: ========AAA========>', data); // Log QuanDX fix bug
+		// console.log('data: ========AAA========>', data); // Log QuanDX fix bug
 
 		const { devicePost, accountName, workTimestamp, cardNumber, money, percentBank, percentCustomer, type } = data;
 		if (devicePost && workTimestamp && accountName && cardNumber && money && percentBank && percentCustomer && type && data.extends) {
@@ -145,7 +145,7 @@ function ModalAddNew(props) {
 		}
 	};
 
-	console.log('data: ================>', data); // Log QuanDX fix bug
+	// console.log('data: ================>', data); // Log QuanDX fix bug
 
 	return(
 		<Modal

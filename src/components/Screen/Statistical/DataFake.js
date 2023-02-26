@@ -61,7 +61,7 @@ const dataFakeInvoice = {
 			data: {
 				key: "3",
 				device: 'Thiết bị 3',
-				workTime: '24/12/2022',
+				workTime: '23/12/2022',
 				accountName: "Bắc Giang",
 				cardNumber: '3',
 				amountOfMoney: '10,000,000 vnđ',
@@ -95,7 +95,7 @@ const dataFakeInvoice = {
 			data: {
 				key: "5",
 				device: 'Thiết bị 5',
-				workTime: '24/12/2022',
+				workTime: '21/12/2022',
 				accountName: "Bạc Liêu",
 				cardNumber: '5',
 				amountOfMoney: '70,000,000 vnđ',
@@ -112,7 +112,7 @@ const dataFakeInvoice = {
 			data: {
 				key: "6",
 				device: 'Thiết bị 6',
-				workTime: '24/12/2022',
+				workTime: '23/12/2022',
 				accountName: "Bắc Ninh",
 				cardNumber: '6',
 				amountOfMoney: '60,000,000 vnđ',
@@ -129,7 +129,7 @@ const dataFakeInvoice = {
 			data: {
 				key: "7",
 				device: 'Thiết bị 7',
-				workTime: '24/12/2022',
+				workTime: '22/12/2022',
 				accountName: "Bến Tre",
 				cardNumber: '7',
 				amountOfMoney: '50,000,000 vnđ',
@@ -315,5 +315,122 @@ const dataProcessingInvoice = (data) => {
 
 dataProcessingInvoice(dataFakeInvoice);
 
-export { dataFakeHasInvoice, dataFakeInvoice, listDataInvoice };
+const listDataTransaction = {
+	data: {
+		HasTransaction: {
+			total: 79,
+			count: 5,
+			itemIds: [
+				"63fb308112fdbd0008e1761b",
+				"63fae575adf5dc00085aeb0c",
+				"63fae4bcadf5dc00085aeb09",
+				"63fb0f2772e0ea0008fb4d08",
+				"63fae7e29549b20008d934f6"
+			]
+		},
+
+		Transaction: {
+			"63fb308112fdbd0008e1761b": {
+				userId: "admin",
+				companyId: "00000",
+				money: 100000,
+				extends: "ok",
+				type: "Rút tiền",
+				percentCustomer: 1.5,
+				percentBank: 1.4,
+				workTimestamp: 1677517200000,
+				timestamp: 1677406302493,
+				_id: "63fb308112fdbd0008e1761b",
+				devicePost: "Thiết bị 1",
+				customerId: "000000000",
+				version: "v.0.0.0"
+			},
+			"63fae575adf5dc00085aeb0c": {
+				userId: "admin",
+				companyId: "00000",
+				money: 100000,
+				extends: "ok ",
+				type: "Rút tiền",
+				percentCustomer: 1.4,
+				percentBank: 1.2,
+				workTimestamp: 1677344400000,
+				timestamp: 1677386939476,
+				_id: "63fae575adf5dc00085aeb0c",
+				devicePost: "Thiết bị 1",
+				customerId: "000000000",
+				version: "v.0.0.0"
+			},
+			"63fae4bcadf5dc00085aeb09": {
+				userId: "admin",
+				companyId: "00000",
+				money: 10000,
+				extends: "ok",
+				type: "Rút tiền",
+				percentCustomer: 1.4,
+				percentBank: 1.2,
+				workTimestamp: 1677344400000,
+				timestamp: 1677386939476,
+				_id: "63fae4bcadf5dc00085aeb09",
+				devicePost: "Thiết bị 1",
+				customerId: "000000000",
+				version: "v.0.0.0"
+			},
+			"63fb0f2772e0ea0008fb4d08": {
+				userId: "admin",
+				companyId: "00000",
+				money: 10000,
+				extends: "ok",
+				type: "Rút tiền",
+				percentCustomer: 1.4,
+				percentBank: 1.2,
+				workTimestamp: 1677344400000,
+				timestamp: 1677397799051,
+				_id: "63fb0f2772e0ea0008fb4d08",
+				devicePost: "Thiết bị 1",
+				customerId: "000000000",
+				version: "v.0.0.0"
+			},
+			"63fae7e29549b20008d934f6": {
+				userId: "admin",
+				companyId: "00000",
+				money: 100000,
+				extends: "ok",
+				type: "Rút tiền",
+				percentCustomer: 1.4,
+				percentBank: 1.2,
+				workTimestamp: 1677344400000,
+				timestamp: 1677387745992,
+				_id: "63fae7e29549b20008d934f6",
+				devicePost: "Thiết bị 1",
+				customerId: "000000000",
+				version: "v.0.0.0"
+			}
+		}
+	}
+}
+
+
+const listDataTransactionFake = [];
+
+const dataTransaction = (list) => {
+	const { data } = list
+	const { Transaction } = data;
+	if (Object.keys(Transaction).length) {
+		for (const property in Transaction) {
+			if (Transaction.hasOwnProperty(property)) {
+				const itemInvoice = Transaction[property];
+					// gán giá trị cũ vào thuộc tính mới
+					itemInvoice.key = itemInvoice._id;
+					// xóa thuộc tính mới
+					delete itemInvoice._id;
+				listDataTransactionFake.push(itemInvoice);
+			}
+		}
+	}
+};
+
+dataTransaction(listDataTransaction);
+
+
+export { dataFakeHasInvoice, dataFakeInvoice, listDataInvoice, listDataTransactionFake };
 

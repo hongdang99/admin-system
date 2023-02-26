@@ -22,7 +22,7 @@ import SelectOption from "./SelectOption";
 import ModalNote from "./ModalNote";
 import ModalAddNew from "./ModalAddNew";
 import OpenChart from "./OpenChart";
-import { dataFakeHasInvoice, listDataInvoice } from "./DataFake";
+import { dataFakeHasInvoice, listDataInvoice, listDataTransactionFake } from "./DataFake";
 
 // Styles
 import styles from './Styles/index.module.scss';
@@ -163,12 +163,17 @@ function Statistical() {
 			key: "device",
 			...getColumnSearchProps("device", "tên thiết bị"),
 			sorter: (a, b) => a.device.length - b.device.length,
-			sortDirections: ["descend", "ascend"]
+			sortDirections: ["descend", "ascend"],
+			width: 140,
+			fixed: "left"
 		},
 		{
 			title: "Ngày làm",
 			dataIndex: "workTime",
 			key: "workTime",
+			width: 120,
+			fixed: "left",
+			// sorter: true
 		},
 		{
 			title: "Chủ thẻ",
@@ -247,6 +252,8 @@ function Statistical() {
 			title: "operation",
 			key: "operation",
 			dataIndex: "operation",
+			fixed: "right",
+			width: 100,
 			render: (_, record) =>
 				listDataInvoice.length >= 1 ? (
 					<Popconfirm
@@ -268,7 +275,11 @@ function Statistical() {
 
 	const total = dataFakeHasInvoice.HasInvoice['total'] || 0;
 
-    return(
+
+	console.log('listDataTransactionFake: ================>', listDataTransactionFake); // Log QuanDX fix bug
+
+
+	return(
     	<div className={styles.wrapInvoice}>
 		    <div className={styles.invoiceHeader}>
 			    <div className={styles.contentLeft}>
@@ -281,12 +292,13 @@ function Statistical() {
 		    </div>
 		    <Table
 			    columns={columns}
+			    scroll={{ x: 1300 }}
 			    dataSource={listDataInvoice}
 			    pagination={{
 				    onChange: cancel,
 				    defaultCurrent: 1,
 				    total
-		        }}
+			    }}
 		    />
 		    <ModalNote open={Object.values(dataInvoice).length !== 0} setOpen={onClickNote} dataInvoice={dataInvoice} />
 	    </div>
