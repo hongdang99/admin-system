@@ -24,18 +24,26 @@ import { convertMDY, convertTimeStamp, dateFormatList, today } from "./GeneralIn
 function DatePickerComponent(props) {
 	const { style, placeholder, onDatePicker } = props;
 
+	const refDatePicker = React.useRef(null);
+
 	const onChangeDatePicker = (date, dateString) => {
 		const dataStringMDY = convertMDY(dateString);
 		const dataTimeStamp = convertTimeStamp(dataStringMDY);
-		onDatePicker(dataTimeStamp);
+		refDatePicker.current = dataTimeStamp;
+	};
+
+	const onblurDatePicker = () => {
+		const timeStamp = refDatePicker.current;
+		onDatePicker(timeStamp);
 	};
 
     return(
 	    <DatePicker
 		    size="large"
 		    locale={locale}
-		    format={dateFormatList}
 		    style={{...style}}
+		    onBlur={onblurDatePicker}
+		    format={dateFormatList}
 		    placeholder={placeholder}
 		    onChange={onChangeDatePicker}
 		    defaultValue={dayjs(today(), dateFormatList[0])}
@@ -66,4 +74,4 @@ DatePickerComponent.defaultProps = {
 	placeholder: 'Chọn ngày làm',
 };
 
-export default DatePickerComponent;
+export default React.memo(DatePickerComponent);

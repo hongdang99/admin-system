@@ -16,16 +16,17 @@ import React from 'react';
 import "dayjs/locale/vi";
 import axios from "axios";
 import PropTypes from 'prop-types';
-import { Modal, Select, message } from 'antd';
+import { Modal, message, Button } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
 
 // Component
-import InputCustom from "./InputCustom";
+import useModalAddNew from "./useModalAddNew";
 import AutoCompleteCustom from "./AutoCompleteCustom";
 
 // Shared
+import SelectComponent from "../Shared/SelectComponent";
+import { typeName } from '../Shared/GeneralInformationTable';
 import DatePickerComponent from '../Shared/DatePickerComponent';
-import { typeName, convertTimeStamp } from '../Shared/GeneralInformationTable';
 
 // Util
 import { API_URL } from "../../../../utils/Config";
@@ -35,72 +36,50 @@ import styles from './Styles/index.module.scss';
 
 // image
 import close from '../../../Img/close.png';
-
-const provinceDataType = ['Rút tiền', 'Đáo'];
-
-const optionsDevicePost = [
-	{id: '1', value: 'Thiết bị 1'},
-	{id: '2', value: 'Thiết bị 2'},
-	{id: '3', value: 'Thiết bị 3'},
-	{id: '4', value: 'Thiết bị 4'},
-	{id: '5', value: 'Thiết bị 5'},
-	{id: '6', value: 'Thiết bị 6'},
-	{id: '7', value: 'Thiết bị 7'},
-	{id: '8', value: 'Thiết bị 8'},
-	{id: '9', value: 'Thiết bị 9'},
-	{id: '10', value: 'Thiết bị 10'},
-	{id: '11', value: 'Thiết bị 11'},
-	{id: '12', value: 'Thiết bị 12'},
-	{id: '13', value: 'Thiết bị 13'},
-	{id: '14', value: 'Thiết bị 14'},
-	{id: '15', value: 'Thiết bị 15'}
-];
-
-const optionsPercentBank = [
-	{id: '1', value: '1.2'},
-	{id: '2', value: '1.4'},
-	{id: '3', value: '1.6'},
-	{id: '4', value: '1.8'},
-	{id: '5', value: '2'},
-];
+import InputComponentAccountName from "../Shared/InputComponentAccountName";
+import InputComponent from "../Shared/InputComponent";
+import InputNumberComponent from "../Shared/InputNumberComponent";
+import InputTextAreaComponent from "../Shared/InputTextAreaComponent";
 
 const { confirm } = Modal;
 
 function ModalAddNew(props) {
 	const { isModal, onCloseModal } = props;
 
-	const initializationValue = {
-		customerId: "000000000",
-		[typeName.devicePost]: '', // Tên thiết bị
-		[typeName.workTimestamp]: convertTimeStamp(), // Ngày làm
-		[typeName.accountName]: '', // Chủ thẻ
-		[typeName.cardNumber]: '', // Số thẻ
-		[typeName.money]: 0, // Số tiền
-		[typeName.percentBank]: 0, // % Phí ngân hàng
-		[typeName.percentCustomer]: 0, // % Phí thu khách
-		[typeName.type]: provinceDataType[0], // Hình thức
-		[typeName.extends]: '', // Note
-	};
-
-	// All Data Modal Add news
-	const [data, setData] = React.useState(initializationValue);
+	const {
+		data,
+		setData,
+		isDisabled,
+		setDisabled,
+		onChangeTag,
+		onDatePicker,
+		onChangeInput,
+		provinceDataType,
+		optionsDevicePost,
+		optionsPercentBank,
+	} = useModalAddNew();
 
 	// Loading
 	const [confirmLoading, setConfirmLoading] = React.useState(false);
 
-	const onCancelModal = () => {
-		onCloseModal();
-	};
-
-	const onSuccess = () => {
-		message.success('Thêm khách hàng mới thành công');
+	const resetValue = () => {
 		setData({
 			...data,
 			[typeName.accountName]: '', // Chủ thẻ
-			[typeName.cardNumber]: '', // Số thẻ
-			[typeName.money]: 0, // Số tiền
-			[typeName.extends]: '', // Note
+			// [typeName.cardNumber]: '', // Số thẻ
+			// [typeName.money]: 0, // Số tiền
+			// [typeName.extends]: '', // Note
 		});
+	};
+
+	const onCancelModal = () => {
+		onCloseModal();
+		resetValue();
+	};
+
+	const onSuccess = () => {
+		resetValue();
+		message.success('Thêm mới khách hàng thành công',5 );
 	};
 
 	const onError = () => {
@@ -142,53 +121,73 @@ function ModalAddNew(props) {
 	};
 
 	const onOkModal = () => {
-		if (data.devicePost && data.accountName && data.cardNumber && data.money && data.percentBank && data.percentCustomer && data.type) {
+		console.log('data: ========AAA========>', data); // Log QuanDX fix bug
+
+		const { devicePost, accountName, workTimestamp, cardNumber, money, percentBank, percentCustomer, type } = data;
+		if (devicePost && workTimestamp && accountName && cardNumber && money && percentBank && percentCustomer && type && data.extends) {
 			onCallApi();
 		} else {
+			setDisabled(true);
 			Modal.warning({
 				title: 'Thông tin khách hàng không được để trống!',
-				content: 'Vui lòng nhập đầy đủ thông tin khách hàng.',
+				content: `Vui lòng nhập đầy đủ: 
+				${!devicePost ? 'Tên thiết bị, ' : ''} 
+				${!workTimestamp ? 'Ngày làm, ' : ''}
+				${!accountName ? 'Chủ thẻ, ' : ''}
+				${!cardNumber ? 'Số thẻ, ' : ''}
+				${!money ? 'Số tiền, ' : ''}
+				${!percentBank ? '% Phí ngân hàng, ' : ''}
+				${!percentCustomer ? '% Phí thu khách, ' : ''}
+				${!type ? 'Hình thức, ' : ''}			
+				${!data.extends ? 'Note': ''}.			
+				`
 			});
 		}
 	};
 
-	const  onDatePicker = (dataTimeStamp) => {
-		setData({ ...data, [typeName.workTimestamp]: dataTimeStamp });
-	};
-
-	const onChangeTag = (value) => {
-		// Hình thức
-		setData({ ...data, [typeName.type]: value  });
-	};
-
-	const onChangeInput = (value, type) => {
-		setData({ ...data, [typeName[type]]: value })
-	};
-
-	console.log('123: ================>', 123); // Log QuanDX fix bug
+	console.log('data: ================>', data); // Log QuanDX fix bug
 
 	return(
 		<Modal
-			title="Thêm mới khách hàng"
 			centered
 			width={900}
-			okText="Lưu"
-			cancelText="Đóng"
+			open={isModal}
 			onOk={onOkModal}
 			onCancel={onCancelModal}
+			title="Thêm mới khách hàng"
 			confirmLoading={confirmLoading}
-			open={isModal}
 			wrapClassName={styles.modalAddNew}
 			closeIcon={<img src={close} alt="" width='12px' />}
+			footer={[
+				<Button
+					key="cancel"
+					type="primary"
+					danger size='large'
+					onClick={onCancelModal}
+				>
+					Đóng
+				</Button>,
+				<Button
+					key="ok"
+					size='large'
+					type="primary"
+					onClick={onOkModal}
+					disabled={isDisabled}
+					loading={confirmLoading}
+				>
+					Lưu
+				</Button>,
+			]}
 		>
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>Tên thiết bị:</span>
 				<AutoCompleteCustom
 					isText
-					placeholder="Vui lòng nhập tên thiết bị"
+					setDisabled={setDisabled}
+					onChangeInput={onChangeInput}
 					typeName={typeName.devicePost}
 					optionsData={optionsDevicePost}
-					onChangeInputCustom={onChangeInput}
+					placeholder="Vui lòng nhập tên thiết bị..."
 				/>
 			</div>
 			<div className={styles.wrapContent}>
@@ -200,73 +199,73 @@ function ModalAddNew(props) {
 			</div>
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>Chủ thẻ:</span>
-				<InputCustom
+				<InputComponentAccountName
 					data={data}
 					maxLength={100}
-					placeholder="Tên chủ thẻ"
+					setDisabled={setDisabled}
+					placeholder="Tên chủ thẻ..."
 					typeName={typeName.accountName}
-					onChangeInputCustom={onChangeInput}
+					onChangeInput={onChangeInput}
 				/>
 			</div>
 			<div className={styles.wrapContent}>
 				<samp className={styles.titleText}>Số thẻ:</samp>
-				<InputCustom
+				<InputComponent
 					data={data}
 					maxLength={50}
-					placeholder="Mã số thẻ"
+					placeholder="Mã số thẻ..."
+					setDisabled={setDisabled}
+					onChangeInput={onChangeInput}
 					typeName={typeName.cardNumber}
-					onChangeInputCustom={onChangeInput}
 				/>
 			</div>
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>Số tiền nhận từ khách:</span>
-				<InputCustom
-					data={data}
-					typeInputNumber
+				<InputNumberComponent
 					typeName={typeName.money}
-					max={100000000000000000000}
-					onChangeInputCustom={onChangeInput}
+					setDisabled={setDisabled}
+					onChangeInput={onChangeInput}
+					placeholder="Vui lòng nhập số tiền được nhận từ khách..."
 				/>
 			</div>
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>% Phí ngân hàng: </span>
 				<AutoCompleteCustom
+					data={data}
+					setDisabled={setDisabled}
+					onChangeInput={onChangeInput}
 					typeName={typeName.percentBank}
 					optionsData={optionsPercentBank}
-					onChangeInputCustom={onChangeInput}
-					placeholder="Vui lòng nhập % phí ngân hàng"
+					placeholder="Vui lòng nhập % phí ngân hàng..."
 				/>
 			</div>
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>% Phí thu khách:</span>
 				<AutoCompleteCustom
+					data={data}
+					setDisabled={setDisabled}
+					onChangeInput={onChangeInput}
 					optionsData={optionsPercentBank}
 					typeName={typeName.percentCustomer}
-					onChangeInputCustom={onChangeInput}
-					placeholder="Vui lòng nhập % phí thu khách"
+					placeholder="Vui lòng nhập % phí thu khách..."
 				/>
 			</div>
 			<div className={styles.wrapContent}>
 				<span className={styles.titleText}>Hình thức:</span>
-				<Select
-					size="large"
-					onChange={onChangeTag}
+				<SelectComponent
+					onSelect={onChangeTag}
+					data={provinceDataType}
 					style={{ width: '100%' }}
-					defaultValue={provinceDataType[0]}
-					options={provinceDataType.map((province) => ({
-						label: province,
-						value: province,
-					}))}
 				/>
 			</div>
 			<div>
 				<span className={styles.titleText}>Note:</span>
-				<InputCustom
-					data={data}
-					typeName={typeName.extends}
-					typeTextArea
+				<InputTextAreaComponent
 					maxLength={250}
-					onChangeInputCustom={onChangeInput}
+					setDisabled={setDisabled}
+					typeName={typeName.extends}
+					onChangeInput={onChangeInput}
+					style={{ marginBottom: '25px' }}
 				/>
 			</div>
 		</Modal>

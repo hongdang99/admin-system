@@ -120,7 +120,6 @@ function InputCustom(props) {
 				    />
 			    ) : (
 			    	<Input
-					    autoSize
 					    showCount
 					    size="large"
 					    value={valueInput}
