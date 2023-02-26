@@ -12,7 +12,7 @@
  * @modifier abc@bkav.com on xx/xx/xxxx đã chỉnh sửa abcxyx (Chỉ các thay đổi quan trọng mới cần ghi lại note này)
  */
 
-import REGEX_BASE from '../const/regexBase';
+import REGEX_BASE from './regexBase';
 
 /**
  * validationName: Chỉ cho phép tên gồm các ký tự tiếng Việt và các chữ số
