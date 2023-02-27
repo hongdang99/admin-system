@@ -292,7 +292,7 @@ function Statistical() {
 		    </div>
 		    <Table
 			    columns={columns}
-			    scroll={{ x: 1300 }}
+			    scroll={{ x: 1800 }}
 			    dataSource={listDataInvoice}
 			    pagination={{
 				    onChange: cancel,

@@ -85,6 +85,7 @@ function AutoCompleteCustom(props) {
 	        <AutoComplete
 		        allowClear
 		        size="large"
+		        style={{...style}}
 		        onChange={onChange}
 		        options={optionsData}
 		        disabled={checkDisabled}
@@ -93,7 +94,6 @@ function AutoCompleteCustom(props) {
 		        filterOption={onFilterOption}
 		        onFocus={onfocusAutoComplete}
 		        status={checkError && 'error'}
-		        style={{...style, width: '100%'}}
 	        />
 	        {checkError && <span className={styles.textError}>{checkError}</span>}
         </div>

@@ -29,6 +29,11 @@
             font-size: 20px;
         }
     }
+    .wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+    }
     .wrapContent {
         margin: 5px 0;
     }
@@ -38,5 +43,17 @@
         font-size: 16px;
         line-height: 22px;
         font-weight: 600;
+    }
+    .contentLeft {
+        margin-right: 10px;
+    }
+    .contentRight {
+        margin-left: 10px;
+    }
+    ._flex1 {
+        flex: 1;
+    }
+    ._flex2 {
+        flex: 2;
     }
 }
