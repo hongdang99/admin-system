@@ -24,7 +24,6 @@ import styles from "./Styles/index.module.scss";
 
 function InputComponent(props) {
 	const {
-		data,
 		typeName,
 		maxLength,
 		placeholder,
@@ -42,7 +41,6 @@ function InputComponent(props) {
 
 	const onChange = (e) => {
 		const { value } = e.target;
-		refValueInput.current = value;
 		const countValueNew = value.length;
 		if (countValueNew === maxLength) {
 			setDisabled && setDisabled(true);
@@ -54,7 +52,7 @@ function InputComponent(props) {
 	};
 
 	const onBlurInput = () => {
-		const valueNew = refValueInput.current;
+		const valueNew = refValueInput.current.input.value;
 		if (!valueNew) {
 			setDisabled && setDisabled(true);
 			setCheckError('Dữ liệu không được để trống, vui lòng nhập.')
@@ -71,6 +69,7 @@ function InputComponent(props) {
 		    <Input
 			    showCount
 			    size="large"
+			    ref={refValueInput}
 			    onChange={onChange}
 			    onBlur={onBlurInput}
 			    maxLength={maxLength}
